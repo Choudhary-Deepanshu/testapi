@@ -150,7 +150,7 @@ class _FarmInfoState extends State<FarmInfo> {
                         ),
                        
                         SizedBox(
-                          height: 90,
+                          height: 80,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,7 +158,8 @@ class _FarmInfoState extends State<FarmInfo> {
                             // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
-                                height: 68,
+                                height: 50,
+                                width: 165,
                                 child: dropDownButton(
                                     isDropDwonContainer: true,
                                     context: context,
@@ -187,7 +188,7 @@ class _FarmInfoState extends State<FarmInfo> {
                               CustomTextField(
                                 textFilledHeight: 90,
                                 isRequired: true,
-                                textFilledWidth: 150,
+                                textFilledWidth: 130,
 
                                 textStyle: TextStyle(color: primary),
                                 cursorHeight: 30,

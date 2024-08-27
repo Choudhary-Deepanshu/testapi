@@ -23,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final bool isSuffix;
   final  onChange;
   final TextAlign textAlign;
+  final bool isOnChange ;
 
   final int maxValueofCharacter;
 
@@ -57,11 +58,14 @@ class CustomTextField extends StatelessWidget {
     this.fillColor = const Color.fromARGB(196, 237, 236, 236),
     this.cursorHeight = 23,
     this.prefixText = "",
-    this.onChange = (),
+    this.onChange =(),
     this.maxValueofCharacter = 100,
     this.textAlign = TextAlign.start,
+    this.isOnChange=false,
   });
- 
+ test(){
+
+ }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -81,7 +85,8 @@ class CustomTextField extends StatelessWidget {
             LengthLimitingTextInputFormatter(maxValueofCharacter),
             // FilteringTextInputFormatter.digitsOnly
           ],
-          onChanged: (value) => onChange(value),
+          onChanged: (value)=>
+         isOnChange? onChange(value):null,
           decoration: InputDecoration(
             // constraints: BoxConstraints(maxHeight: 400,minHeight: 300),
             suffixIcon: isSuffix ? suffix : null,

@@ -94,6 +94,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
@@ -113,6 +114,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         controller: otp1,
                         keyboardType: TextInputType.number),
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
@@ -132,6 +134,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         controller: otp2,
                         keyboardType: TextInputType.number),
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
@@ -151,6 +154,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         controller: otp3,
                         keyboardType: TextInputType.number),
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
@@ -171,6 +175,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         keyboardType: TextInputType.number),
 
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
@@ -191,6 +196,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
 
                     CustomTextField(
+                      isOnChange: true,
                         contectPadding: EdgeInsets.all(0),
                         cursorHeight: 40,
                         textAlign: TextAlign.center,
