@@ -1,23 +1,29 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapi/Screens/auth_screen/sign_up_screen.dart';
 import 'package:testapi/Screens/other_auth_screen/done_screen.dart';
 import 'package:testapi/const/userids.dart';
 import 'package:testapi/data/api/api_value.dart';
+import 'package:testapi/feature/facebook_auth.dart';
+import 'package:testapi/feature/google_authentication.dart';
 import 'package:testapi/screen/forgot_password.dart';
+import 'package:testapi/utils/bottom_message.dart';
 import 'package:testapi/utils/custom_Textfilled.dart';
 import 'package:testapi/utils/helper_text.dart';
 import 'package:testapi/utils/social_button.dart';
 
 import '../../const/colors.dart';
+import '../../sharedPref/shared_pref.dart';
 import '../../utils/custom_button.dart';
 import 'forgot_password_screen.dart';
 
-String authToken="";
+String authToken = "";
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -29,6 +35,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
+  SharedPreferencesHelper sharedPreferences = SharedPreferencesHelper();
   final _fromKey = GlobalKey<FormState>();
   ApiContainer apiValue = ApiContainer();
 
@@ -124,7 +131,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     isborderSide: false,
                     isPrefix: true,
                     hintText: "Password",
-
                     prefix: Icon(Icons.lock_outline),
                     isSuffix: true,
                     suffix: Padding(
@@ -166,19 +172,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                 socialID: social_id);
                             print(res);
                             if (res['success'] == true) {
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                           
-                            String token=res['token'];
-                                  prefs.setString('authToken', token);
-                          
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
 
-                          
-                            
+                              String token = res['token'];
+                              prefs.setString('authToken', token);
+
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => DoneScreen()));
-                                      print(prefs.getString('authToken'));
+                              print(prefs.getString('authToken'));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(res['message'])));
@@ -205,13 +209,40 @@ class _SignInScreenState extends State<SignInScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SignInIcons(FontAwesomeIcons.google, Colors.red, () {},
-                          isPng: true),
+                      SignInIcons(FontAwesomeIcons.google, Colors.red,
+                          () async {
+                        UserCredential userCredential =
+                            await signInWithGoogle();
+                        if (userCredential.user != null) {
+                          sharedPreferences.googleAuthTrue();
+
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DoneScreen()),
+                              (route) => false);
+                        } else {
+                          scaffoldMessage(
+                              context: context,
+                              message: "Some error has occurred ");
+                        }
+                      }, isPng: true),
                       SizedBox(width: 25),
                       SignInIcons(FontAwesomeIcons.apple, Colors.black, () {}),
                       SizedBox(width: 25),
-                      SignInIcons(
-                          FontAwesomeIcons.facebook, Colors.blue, () {}),
+                      SignInIcons(FontAwesomeIcons.facebook, Colors.blue, () async{
+                        
+                        var res= await signInFacebook();
+                        print("this is signInfacebook=> ${res}");
+                         
+                         Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DoneScreen()),
+                              (route) => false);
+                      
+                      
+                      }),
                     ],
                   ),
                 ],

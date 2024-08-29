@@ -1,19 +1,26 @@
-import 'package:flutter/cupertino.dart';
+
+import 'dart:ui';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testapi/Screens/auth_screen/sign_in_screen.dart';
 import 'package:testapi/Screens/other_auth_screen/frame_info.dart';
 import 'package:testapi/const/userids.dart';
-import 'package:testapi/data/api/api_value.dart';
-import 'package:testapi/screen/forgot_password.dart';
+
 import 'package:testapi/utils/bottom_message.dart';
 import 'package:testapi/utils/custom_Textfilled.dart';
 import 'package:testapi/utils/helper_text.dart';
 import 'package:testapi/utils/social_button.dart';
 
 import '../../const/colors.dart';
+import '../../feature/facebook_auth.dart';
+import '../../feature/google_authentication.dart';
+import '../../sharedPref/shared_pref.dart';
 import '../../utils/custom_button.dart';
-import 'forgot_password_screen.dart';
+import '../other_auth_screen/done_screen.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -28,6 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passCtrl = TextEditingController();
   TextEditingController conPassCtrl = TextEditingController();
   TextEditingController numberCtrl = TextEditingController();
+
+   SharedPreferencesHelper sharedPreferences=SharedPreferencesHelper();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -64,13 +73,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SignInIcons(FontAwesomeIcons.google, Colors.red, () {},
+                      SignInIcons(FontAwesomeIcons.google, Colors.red, () async {
+                         UserCredential userCredential =
+                            await signInWithGoogle();
+                        if (userCredential.user != null) {
+                          addAllDataInMapUsingGoogleAuth(userCredential);
+                        sharedPreferences.googleAuthTrue();
+
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>FarmInfo()),
+                              (route) => false);
+                        } else {
+                          scaffoldMessage(
+                              context: context,
+                              message: "Some error has occurred ");
+                        }
+                      },
                           isPng: true),
                       SizedBox(width: 25),
                       SignInIcons(FontAwesomeIcons.apple, Colors.black, () {}),
                       SizedBox(width: 25),
                       SignInIcons(
-                          FontAwesomeIcons.facebook, Colors.blue, () {}),
+                          FontAwesomeIcons.facebook, Colors.blue, () async {
+                               Map<String,dynamic>? res= await signInFacebook();
+                        // print("this is signInfacebook=> ${res}");
+                        // print("this is signInfacebook=> ${res['email']}");
+                               addAllDataInMapUsingFacebookAuth( res);
+                         
+                         Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FarmInfo()),
+                              (route) => false);
+                          }),
                     ],
                   ),
                   const SizedBox(
@@ -249,6 +286,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "email": emailCtrl.text.trim(),
       "phone": "+91${numberCtrl.text.trim()}",
       "password": passCtrl.text.trim(),
+      "role": role,
+    };
+  }
+
+  addAllDataInMapUsingGoogleAuth(UserCredential credential) {
+    signUpMap = {
+      "full_name": credential.user!.displayName,
+      "email": credential.user!.email,
+      
+      "phone": credential.user?.phoneNumber,
+      "password": "",
+      "role": role,
+    };
+  }
+   addAllDataInMapUsingFacebookAuth(data) {
+    signUpMap = {
+      "full_name": data['name'],
+      "email": data['email'],
+      
+      "phone":'',
+      "password": "",
       "role": role,
     };
   }

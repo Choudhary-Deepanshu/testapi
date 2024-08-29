@@ -8,6 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:testapi/Screens/auth_screen/sign_in_screen.dart';
 
 import 'package:testapi/const/onboarding_data.dart';
+import 'package:testapi/sharedPref/shared_pref.dart';
 
 import '../../const/colors.dart';
 import '../../utils/custom_button.dart';
@@ -21,6 +22,7 @@ class MainOnBoardingScreen extends StatefulWidget {
 }
 
 class _MainOnBoardingScreenState extends State<MainOnBoardingScreen> {
+    SharedPreferencesHelper sharedPreferences=SharedPreferencesHelper();
   PageController pageController = PageController();
   int selectedIdx = 0;
   List onBoardingData = [
@@ -184,6 +186,7 @@ class _MainOnBoardingScreenState extends State<MainOnBoardingScreen> {
                                           text: "Join the Movement!",
                                           onPressed: () {
                                             if (index == 2) {
+                                              SharedPreferencesHelper.setFirstTime(isFirstTime:false);
                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
                                             } else {
                                               pageController
@@ -194,6 +197,7 @@ class _MainOnBoardingScreenState extends State<MainOnBoardingScreen> {
                                   // ),
                                   InkWell(
                                     onTap: (){
+                                      SharedPreferencesHelper.setFirstTime(isFirstTime: false);
                                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SignInScreen()),(Route<dynamic> route) => false);
                                     },
                                      child: 

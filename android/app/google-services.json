@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "617997492573",
+    "project_id": "meetxapp-abacc",
+    "storage_bucket": "meetxapp-abacc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617997492573:android:8f8c4c531cd675252448b4",
+        "android_client_info": {
+          "package_name": "com.example.testapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617997492573-o2d3bieusm97hcha57mt2lg4drbbed11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.testapi",
+            "certificate_hash": "58ea686aed72abdc2d297e3dea3773e2ccb60713"
+          }
+        },
+        {
+          "client_id": "617997492573-43iomuim9omagiu6mlans8q6mm537pfp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANKOuNZQuRPLnz0jjNxutry1DELPj0N10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617997492573-43iomuim9omagiu6mlans8q6mm537pfp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

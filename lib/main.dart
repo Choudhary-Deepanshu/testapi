@@ -1,21 +1,46 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapi/Screens/auth_screen/sign_in_screen.dart';
-import 'package:testapi/Screens/auth_screen/sign_up_screen.dart';
+
 import 'package:testapi/Screens/on_boarding_screens/main_on_boarding_screen.dart';
 
 import 'package:testapi/const/colors.dart';
-import 'package:testapi/screen/business_hours_screen.dart';
-import 'package:testapi/screen/forgot_password.dart';
-import 'package:testapi/screen/welcome_screen.dart';
+
+import 'package:testapi/sharedPref/shared_pref.dart';
 
 
+late SharedPreferences _sharedPreferences;
+void main() async{
+  await WidgetsFlutterBinding.ensureInitialized();
+  
 
-void main() {
+  if (kIsWeb) {
+    // await Firebase.initializeApp(
+        // options: FirebaseOptions(
+        //     apiKey: "AIzaSyArpR9TJeuCYunr6zPddA1rLIVwt1iVap0",
+        //     appId: "1:428387108052:web:20609b5a3f4e63ad3ba741",
+        //     messagingSenderId: "428387108052",
+        //     projectId: "chat-5673b",
+        //     storageBucket: "chat-5673b.appspot.com"));
+  } else {
+    await Firebase.initializeApp();
+  }
+
+
+   await SharedPreferencesHelper.init();
+
+  await _initializePrefs();
+
   runApp(const MyApp());
 }
-
+  Future<void> _initializePrefs() async {
+  _sharedPreferences = await SharedPreferences.getInstance();
+}
+  
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -26,21 +51,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+      
         colorScheme: ColorScheme.fromSeed(
           primary: primary,
           secondary: secondary,
@@ -49,7 +60,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home:   const MainOnBoardingScreen(),
-      home: MainOnBoardingScreen(),
+      home:SharedPreferencesHelper.getFirstTime()==true||SharedPreferencesHelper.getFirstTime()==null? MainOnBoardingScreen():SignInScreen(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:testapi/Screens/other_auth_screen/business_hours_screen.dart';
 import 'package:testapi/screen/forgot_password.dart';
+import 'package:testapi/utils/alert_dialog.dart';
 import 'package:testapi/utils/custom_Textfilled.dart';
 import 'package:testapi/utils/helper_text.dart';
 import 'package:testapi/utils/social_button.dart';
@@ -23,6 +24,13 @@ class DoneScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         elevation: 0,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(onPressed: (){
+            alertDialog(context);
+
+          }, icon: Icon(Icons.power_settings_new_sharp)),
+          SizedBox(width: 25,)
+        ],
       ),
       body: Container(
         height: double.infinity,
